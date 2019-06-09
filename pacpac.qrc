@@ -1,0 +1,17 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file alias="board">pac_map3.png</file>
+    </qresource>
+    <qresource prefix="/new/prefix2">
+        <file alias="pacman">pacdown1.png</file>
+    </qresource>
+    <qresource prefix="/new/prefix3">
+        <file alias="dot">dot.png</file>
+    </qresource>
+    <qresource prefix="/new/prefix4">
+        <file alias="g1">ghostdownred2.png</file>
+        <file alias="g2">ghostdown2.png</file>
+        <file alias="g3">ghostdownblue2.png</file>
+        <file alias="g4">ghostdownorange2.png</file>
+    </qresource>
+</RCC>

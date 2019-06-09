@@ -12,3 +12,15 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    gw = new game;
+    gw->show();
+    hide();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    app->quit();
+}
