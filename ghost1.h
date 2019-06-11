@@ -4,6 +4,7 @@
 
 
 
+
 class ghost1:public ghost
 {
 public:

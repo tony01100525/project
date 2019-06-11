@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include "game.h"
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -25,7 +26,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QApplication *app;
-    game *gw;
+
 };
 
 #endif // MAINWINDOW_H

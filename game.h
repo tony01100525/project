@@ -32,12 +32,13 @@ public:
     QPixmap board,pac,dot[244],g1,g2,g3,g4;
     QGraphicsPixmapItem *p,*d[244],*gh1,*gh2,*gh3,*gh4;
     QGraphicsTextItem *text;
-    int i,r,k,n,t,m=0,f=0,score=0,dd[244],over=0,gg1,gg2,gg3,gg4;
+    int i,r,k,n,t,m=0,f=0,score=0,dd[244],over=0,gg1=1,gg2,gg3,gg4,ggg,th=0;
     bool walk(int x,int y);
+    bool cantwalk(int x,int y);
 private:
     Ui::game *ui;
     //QTimer *mytime;
-    QTimer *now,*gt1;
+    QTimer *now,*gt1,*gt2;
 
     QLCDNumber *lcd;
 
@@ -45,11 +46,15 @@ private:
 protected:
     void keyPressEvent(QKeyEvent *event);
 
-    void stop();
+    void stop(int q,int w);
 
 private slots:
     void move();
     void g1move();
+    void g2move();
+
+
+
 
 
 

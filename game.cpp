@@ -181,6 +181,9 @@ game::game(QWidget *parent) :
     gt1 = new QTimer;
     gt1->start(3000);
     connect(gt1,SIGNAL(timeout()),this,SLOT(g1move()));
+    gt2 = new QTimer;
+    gt2->start(500);
+    connect(gt2,SIGNAL(timeout()),this,SLOT(g2move()));
     ui->graphicsView->setScene(scene);
     ui->line->hide();
     ui->line2->hide();
@@ -191,19 +194,15 @@ void game::keyPressEvent(QKeyEvent *event)
 
     if(event->key() == Qt::Key_A){
         //p->setPos(p->x()-(now->elapsed()/1000),p->y());
-        f=m;
         m=0;
     }
     if(event->key() == Qt::Key_D){
-        f=m;
         m=1;
     }
     if(event->key() == Qt::Key_W){
-        f=m;
         m=2;
     }
     if(event->key() == Qt::Key_S){
-        f=m;
         m=3;
     }
 }
@@ -360,7 +359,158 @@ bool game::walk(int x, int y)
         //qDebug()<<p->x();
         return true;
     }*/
-    return false;
+            return false;
+}
+
+bool game::cantwalk(int x, int y)
+{
+    if (x<=20*12&&x>=20*1&&y==20) {
+        return false;
+    }
+    if (x==20*1&&y>=20&&y<=160) {
+        return false;
+    }
+    if (x<=20*26&&x>=20*1&&y==100) {
+        return false;
+    }
+    if (x<=20*6&&x>=20*1&&y==160) {
+        return false;
+    }
+    if (x<=20*9&&x>=0&&y==280) {
+        return false;
+    }
+    if (x<=20*12&&x>=20*1&&y==400) {
+        return false;
+    }
+    if (x==20*1&&y>=400&&y<=460) {
+        return false;
+    }
+    if (x<=20*3&&x>=20*1&&y==460) {
+        return false;
+    }
+    if (x<=20*6&&x>=20*1&&y==520) {
+        return false;
+    }
+    if (x==20*1&&y>=520&&y<=580) {
+        return false;
+    }
+    if (x<=20*26&&x>=20*1&&y==580) {
+        return false;
+    }
+//if(r==4){
+    if (x==20*3&&y>=460&&y<=520) {
+        return false;
+    }
+//if(r==7){
+    if (x==20*6&&y>=20&&y<=520) {
+        return false;
+    }
+    if (x<=20*21&&x>=20*6&&y==460) {
+        return false;
+    }
+//if(r==10){
+    if (x==20*9&&y>=100&&y<=160) {
+        return false;
+    }
+    if (x<=20*12&&x>=20*9&&y==160) {
+        return false;
+    }
+    if (x<=20*18&&x>=20*9&&y==220) {
+        return false;
+    }
+    if (x==20*9&&y>=220&&y<=400) {
+        return false;
+    }
+    if (x<=20*18&&x>=20*9&&y==340) {
+        return false;
+    }
+    if (x==20*9&&y>=460&&y<=520) {
+        return false;
+    }
+    if (x<=20*12&&x>=20*9&&y==520) {
+        return false;
+    }
+
+//if(r==13){
+    if (x==20*12&&y>=20&&y<=100) {
+        return false;
+    }
+    if (x==20*12&&y>=160&&y<=220) {
+        return false;
+    }
+    if (x==20*12&&y>=400&&y<=460) {
+        return false;
+    }
+    if (x==20*12&&y>=520&&y<=580) {
+        return false;
+    }
+//if(r==16){
+    if (x<=20*26&&x>=20*15&&y==20) {
+        return false;
+    }
+    if (x==20*15&&y>=20&&y<=100) {
+        return false;
+    }
+    if (x<=20*18&&x>=20*15&&y==160) {
+        return false;
+    }
+    if (x==20*15&&y>=160&&y<=220) {
+        return false;
+    }
+    if (x<=20*26&&x>=20*15&&y==400) {
+        return false;
+    }
+    if (x==20*15&&y>=400&&y<=460) {
+        return false;
+    }
+    if (x<=20*18&&x>=20*15&&y==520) {
+        return false;
+    }
+    if (x==20*15&&y>=520&&y<=580) {
+        return false;
+    }
+//if(r==19){
+    if (x==20*18&&y>=100&&y<=160) {
+        return false;
+    }
+    if (x==20*18&&y>=220&&y<=400) {
+        return false;
+    }
+    if (x<=20*27&&x>=20*18&&y==280) {
+        return false;
+    }
+    if (x==20*18&&y>=460&&y<=520) {
+        return false;
+    }
+//if(r==22){
+    if (x==20*21&&y>=20&&y<=520) {
+        return false;
+    }
+    if (x<=20*26&&x>=20*21&&y==160) {
+        return false;
+    }
+    if (x<=20*26&&x>=20*21&&y==520) {
+        return false;
+    }
+//if(r==25){
+    if (x<=20*26&&x>=20*24&&y==460) {
+        return false;
+    }
+    if (x==20*24&&y>=460&&y<=520) {
+        return false;
+    }
+//if(r==27){
+    if (x==20*26&&y>=20&&y<=160) {
+        return false;
+    }
+    if (x==20*26&&y>=400&&y<=460) {
+        return false;
+    }
+    if (x==20*26&&y>=520&&y<=580) {
+        return false;
+    }
+
+    return true;
 }
 
 
@@ -369,18 +519,31 @@ void game::move()
 {
 
         if(m==0&&walk(p->x()-1,p->y())){
-            f=4;
+            f=0;
             p->setPos(p->x()-1,p->y());
         }else if (m == 1&&walk(p->x()+1,p->y())) {
-            f=4;
+            f=1;
             p->setPos(p->x()+1,p->y());
         }else if (m == 2&&walk(p->x(),p->y()-1)) {
-            f=4;
+            f=2;
             p->setPos(p->x(),p->y()-1);
         }else if (m == 3&&walk(p->x(),p->y()+1)) {
-            f=4;
+            f=3;
             p->setPos(p->x(),p->y()+1);
-        }else{
+        }else if(f==0&&walk(p->x()-1,p->y())){
+            p->setPos(p->x()-1,p->y());
+        }else if (f==1&&walk(p->x()+1,p->y())) {
+            p->setPos(p->x()+1,p->y());
+        }else if (f==2&&walk(p->x(),p->y()-1)) {
+            p->setPos(p->x(),p->y()-1);
+        }else if (f==3&&walk(p->x(),p->y()+1)) {
+            p->setPos(p->x(),p->y()+1);
+        }
+
+
+
+
+        /*else{
 
             if(f==0&&walk(p->x()-1,p->y())){
                 p->setPos(p->x()-1,p->y());
@@ -391,7 +554,7 @@ void game::move()
             }else if (f == 3&&walk(p->x(),p->y()+1)) {
                 p->setPos(p->x(),p->y()+1);
             }
-        }
+        }*/
     for (i=0;i<244;++i) {
         if(p->x()==d[i]->x()&&p->y()==d[i]->y()&&dd[i]==0){
             d[i]->hide();
@@ -405,10 +568,10 @@ void game::move()
     if(over==244){
         ui->line->show();
     }
-    //ghost1 ghost11;
-    //ghost11.move(gh1->x(),gh1->y());
+    ghost1 ghost11;
+    ghost11.move(gh1->x(),gh1->y());
 
-    if(gg1==0&&walk(gh1->x()-1,gh1->y())){
+    /*if(gg1==0&&walk(gh1->x()-1,gh1->y())){
         gh1->setPos(gh1->x()-1,gh1->y());
     }else if (gg1 == 1&&walk(gh1->x()+1,gh1->y())) {
         gh1->setPos(gh1->x()+1,gh1->y());
@@ -416,9 +579,9 @@ void game::move()
         gh1->setPos(gh1->x(),gh1->y()-1);
     }else if (gg1 == 3&&walk(gh1->x(),gh1->y()+1)) {
         gh1->setPos(gh1->x(),gh1->y()+1);
-    }
+    }*/
 
-    if(gg2==0&&walk(gh2->x()-1,gh2->y())){
+    /*if(gg2==0&&walk(gh2->x()-1,gh2->y())){
         gh2->setPos(gh2->x()-1,gh2->y());
     }else if (gg2 == 1&&walk(gh2->x()+1,gh2->y())) {
         gh2->setPos(gh2->x()+1,gh2->y());
@@ -446,13 +609,24 @@ void game::move()
         gh4->setPos(gh4->x(),gh4->y()-1);
     }else if (gg4 == 3&&walk(gh4->x(),gh4->y()+1)) {
         gh4->setPos(gh4->x(),gh4->y()+1);
-    }
+    }*/
 
-    if(p->x()==gh1->x()&&p->y()==gh1->y()||p->x()==gh2->x()&&p->y()==gh2->y()
+    /*if(p->x()==gh1->x()&&p->y()==gh1->y()||p->x()==gh2->x()&&p->y()==gh2->y()
             ||p->x()==gh3->x()&&p->y()==gh3->y()||p->x()==gh4->x()&&p->y()==gh4->y()){
         ui->line2->show();
+        now->stop();
+
+        p->hide();
+    }*/
+
+    if (p->collidesWithItem(gh1)){
+        ui->line2->show();
+        now->stop();
+
         p->hide();
     }
+
+
 
 
 
@@ -463,7 +637,8 @@ void game::move()
 
 void game::g1move()
 {
-    gg1=random()%4;
+
+    //gg1=qrand()%4;
     //srand(6);
     gg2=random()%4;
     //srand(23);
@@ -473,9 +648,17 @@ void game::g1move()
 
 }
 
-void game::stop()
+void game::g2move()
 {
-    p->setPos(p->x(),p->y());
+
+    ggg=qrand()%3;
+            qDebug()<<gg1;
+}
+
+
+void game::stop(int q,int w)
+{
+    p->setPos(q,w);
 }
 
 
