@@ -7,11 +7,14 @@
     </qresource>
     <qresource prefix="/new/prefix3">
         <file alias="dot">dot.png</file>
+        <file alias="power">pacmanCloseTest.png</file>
     </qresource>
     <qresource prefix="/new/prefix4">
         <file alias="g1">ghostdownred2.png</file>
         <file alias="g2">ghostdown2.png</file>
         <file alias="g3">ghostdownblue2.png</file>
         <file alias="g4">ghostdownorange2.png</file>
+        <file alias="g5">ghostscaredblue1.png</file>
     </qresource>
+    <qresource prefix="/new/prefix5"/>
 </RCC>

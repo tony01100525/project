@@ -29,13 +29,19 @@ SOURCES += \
         mainwindow.cpp \
     game.cpp \
     ghost.cpp \
-    ghost1.cpp
+    ghost1.cpp \
+    ghost2.cpp \
+    ghost3.cpp \
+    ghost4.cpp
 
 HEADERS += \
         mainwindow.h \
     game.h \
     ghost.h \
-    ghost1.h
+    ghost1.h \
+    ghost2.h \
+    ghost3.h \
+    ghost4.h
 
 FORMS += \
         mainwindow.ui \

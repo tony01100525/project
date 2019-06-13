@@ -25,6 +25,10 @@ game::game(QWidget *parent) :
     g2.load(":/new/prefix4/g2");
     g3.load(":/new/prefix4/g3");
     g4.load(":/new/prefix4/g4");
+    for (i=0;i<4;++i) {
+        power[i].load(":/new/prefix3/power");
+    }
+
 
 
     board = board.scaled(560,620);
@@ -36,6 +40,10 @@ game::game(QWidget *parent) :
     g2 = g2.scaled(20,20);
     g3 = g3.scaled(20,20);
     g4 = g4.scaled(20,20);
+    for (i=0;i<4;++i) {
+        power[i] = power[i].scaled(20,20);
+    }
+
 
     scene->addPixmap(board);
     p = scene->addPixmap(pac);
@@ -46,14 +54,22 @@ game::game(QWidget *parent) :
     gh2 = scene->addPixmap(g2);
     gh3 = scene->addPixmap(g3);
     gh4 = scene->addPixmap(g4);
+    for (i=0;i<4;++i) {
+        pow[i] = scene->addPixmap(power[i]);
+    }
 
-    gh1->setPos(20,20);
-    gh2->setPos(520,20);
+
+    gh1->setPos(20,80);
+    gh2->setPos(520,80);
     gh3->setPos(20,580);
     gh4->setPos(520,580);
     p->setPos(20,50);
     p->setFlag(QGraphicsItem::ItemIsFocusable);
     p->setFocus();
+    pow[0]->setPos(20,60);
+    pow[1]->setPos(20,440);
+    pow[2]->setPos(520,60);
+    pow[3]->setPos(520,440);
     i=0;
     for (r=1;r<29;++r) {
         if(r==2||r==27){
@@ -179,14 +195,16 @@ game::game(QWidget *parent) :
     now->start(10);
     connect(now,SIGNAL(timeout()),this,SLOT(move()));
     gt1 = new QTimer;
-    gt1->start(3000);
+    gt1->start(300);
     connect(gt1,SIGNAL(timeout()),this,SLOT(g1move()));
     gt2 = new QTimer;
     gt2->start(500);
-    connect(gt2,SIGNAL(timeout()),this,SLOT(g2move()));
+    connect(gt2,SIGNAL(timeout()),this,SLOT(gggmove()));
+
     ui->graphicsView->setScene(scene);
     ui->line->hide();
     ui->line2->hide();
+
 }
 
 void game::keyPressEvent(QKeyEvent *event)
@@ -205,6 +223,14 @@ void game::keyPressEvent(QKeyEvent *event)
     if(event->key() == Qt::Key_S){
         m=3;
     }
+    if(event->key() == Qt::Key_P&&P==0){
+        now->stop();
+        P=1;
+    }
+    else if(event->key() == Qt::Key_P&&P==1){
+        now->start();
+        P=0;
+    }
 }
 
 bool game::walk(int x, int y)
@@ -221,7 +247,7 @@ bool game::walk(int x, int y)
             if (x<=20*6&&x>=20*1&&y==160) {
                 return true;
             }
-            if (x<=20*9&&x>=0&&y==280) {
+            if (x<=20*9&&x>=-20&&y==280) {
                 return true;
             }
             if (x<=20*12&&x>=20*1&&y==400) {
@@ -321,7 +347,7 @@ bool game::walk(int x, int y)
             if (x==20*18&&y>=220&&y<=400) {
                 return true;
             }
-            if (x<=20*27&&x>=20*18&&y==280) {
+            if (x<=20*28&&x>=20*18&&y==280) {
                 return true;
             }
             if (x==20*18&&y>=460&&y<=520) {
@@ -376,7 +402,7 @@ bool game::cantwalk(int x, int y)
     if (x<=20*6&&x>=20*1&&y==160) {
         return false;
     }
-    if (x<=20*9&&x>=0&&y==280) {
+    if (x<=20*9&&x>=-20&&y==280) {
         return false;
     }
     if (x<=20*12&&x>=20*1&&y==400) {
@@ -476,7 +502,7 @@ bool game::cantwalk(int x, int y)
     if (x==20*18&&y>=220&&y<=400) {
         return false;
     }
-    if (x<=20*27&&x>=20*18&&y==280) {
+    if (x<=20*28&&x>=20*18&&y==280) {
         return false;
     }
     if (x==20*18&&y>=460&&y<=520) {
@@ -518,6 +544,11 @@ bool game::cantwalk(int x, int y)
 void game::move()
 {
 
+    if(p->x()==-20&&p->y()==280){
+        p->setPos(28*20,280);
+    }else if(p->x()==28*20&&p->y()==280){
+        p->setPos(-20,280);
+    }
         if(m==0&&walk(p->x()-1,p->y())){
             f=0;
             p->setPos(p->x()-1,p->y());
@@ -565,11 +596,62 @@ void game::move()
             ui->lcd->display(score);
         }
     }
+    for (i=0;i<4;++i) {
+        if(p->x()==pow[i]->x()&&p->y()==pow[i]->y()&&pp[i]==0){
+            pow[i]->hide();
+            pp[i]+=1;
+            score+=40;
+            //qDebug()<<score;
+            ui->lcd->display(score);
+            ppt=1;
+            pt = new QTimer;
+            pt->start(8000);
+            connect(pt,SIGNAL(timeout()),this,SLOT(ptime()));
+        }
+    }
     if(over==244){
         ui->line->show();
     }
-    ghost1 ghost11;
+    if(ppt==1||ppt==2){
+        g5.load(":/new/prefix4/g5");
+
+        g5 = g5.scaled(20,20);
+
+        gh1->setPixmap(g5);
+        gh2->setPixmap(g5);
+        gh3->setPixmap(g5);
+        gh4->setPixmap(g5);
+
+
+        ppt=2;
+    }else   if(ppt==0){
+        if(gh1->x()==-20&&gh1->y()==0){
+            gh1->setPos(20,80);
+        }
+        if(gh2->x()==-20&&gh2->y()==0){
+            gh2->setPos(520,80);
+        }
+        if(gh3->x()==-20&&gh3->y()==0){
+            gh3->setPos(20,580);
+        }
+        if(gh4->x()==-20&&gh4->y()==0){
+            gh4->setPos(520,580);
+        }
+        gh1->setPixmap(g1);
+        gh2->setPixmap(g2);
+        gh3->setPixmap(g3);
+        gh4->setPixmap(g4);
+    }
+
+
     ghost11.move(gh1->x(),gh1->y());
+
+    ghost22.move(gh2->x(),gh2->y());
+
+
+    ghost33.move(gh3->x(),gh3->y());
+
+    ghost44.move(gh4->x(),gh4->y());
 
     /*if(gg1==0&&walk(gh1->x()-1,gh1->y())){
         gh1->setPos(gh1->x()-1,gh1->y());
@@ -619,40 +701,71 @@ void game::move()
         p->hide();
     }*/
 
-    if (p->collidesWithItem(gh1)){
+    if ((p->collidesWithItem(gh1)||p->collidesWithItem(gh2)||p->collidesWithItem(gh3)||p->collidesWithItem(gh4))&&ppt==0){
         ui->line2->show();
         now->stop();
 
         p->hide();
     }
 
+    if(p->collidesWithItem(gh1)&&ppt==2){
+        gh1->setPos(-20,0);
+        score+=200^(gn+1);
+        ui->lcd->display(score);
+        gn+=1;
+    }
+    if(p->collidesWithItem(gh2)&&ppt==2){
+        gh2->setPos(-20,0);
+        score+=200^(gn+1);
+        ui->lcd->display(score);
+        gn+=1;
+    }
+    if(p->collidesWithItem(gh3)&&ppt==2){
+        gh3->setPos(-20,0);
+        score+=200^(gn+1);
+        ui->lcd->display(score);
+        gn+=1;
+    }
+    if(p->collidesWithItem(gh4)&&ppt==2){
+        gh4->setPos(-20,0);
+        score+=200^(gn+1);
+        ui->lcd->display(score);
+        gn+=1;
+    }
 
 
 
 
-            //qDebug()<<p->x()<<" "<<p->y();
+
+            qDebug()<<ppt;
 
 
 }
 
 void game::g1move()
 {
-
+    gggg = qrand()%4;
     //gg1=qrand()%4;
     //srand(6);
     gg2=random()%4;
     //srand(23);
-    gg3=random()%4;
+    gg3=random()%2;
     //srand(66);
     gg4=random()%4;
 
 }
 
-void game::g2move()
+void game::gggmove()
 {
 
     ggg=qrand()%3;
-            qDebug()<<gg1;
+
+}
+
+void game::ptime()
+{
+    ppt=0;
+    gn=0;
 }
 
 
